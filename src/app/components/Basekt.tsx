@@ -20,10 +20,19 @@ function BasketWall({
   );
 }
 
-function BaseketFloor({ width, height }: { width: number; height: number }) {
+function BaseketFloor({
+  width,
+  height,
+  positionY,
+}: {
+  width: number;
+  height: number;
+  positionY: number;
+}) {
   const [ref, api] = useBox(() => ({
     args: [width, height, 0.1],
     rotation: [-Math.PI / 2, 0, 0],
+    position: [0, positionY, 0],
   }));
 
   return (
@@ -33,7 +42,7 @@ function BaseketFloor({ width, height }: { width: number; height: number }) {
 }
 
 export default function Basket(props: any) {
-  const [width, height, positionY] = [10, 8, 0];
+  const [width, height, positionY] = [10, 8, 4];
   const [halfWidth, halfHeight] = [
     Number((width / 2).toFixed(1)),
     Number((height / 2).toFixed(1)),
@@ -76,7 +85,7 @@ export default function Basket(props: any) {
       <BasketWall {...walls.west} />
       <BasketWall {...walls.south} />
       <BasketWall {...walls.north} />
-      <BaseketFloor width={width} height={width} />
+      <BaseketFloor width={width} height={width} positionY={positionY} />
     </>
   );
 }

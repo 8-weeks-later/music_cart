@@ -1,6 +1,7 @@
 "use client";
 
 import { Canvas } from "@react-three/fiber";
+import { ShoppingCartModel } from "@/app/components/ShoppingCartModel";
 import { OrbitControls, useGLTF } from "@react-three/drei";
 import { Physics, Debug } from "@react-three/cannon";
 
@@ -38,6 +39,7 @@ export default function App() {
           <Plane position={[0, -2.5, 0]} />
           <Album position={[0.1, 5, 0]} />
           <Basket />
+          <ShoppingCartModel />
           <OrbitControls
             enablePan={true}
             enableZoom={true}
