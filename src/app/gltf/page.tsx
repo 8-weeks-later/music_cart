@@ -27,13 +27,13 @@ export default function App() {
 
   return (
     <ThreeCanvas>
-      <Physics>
+      <Physics gravity={[0, -80, 0]}>
         <Debug color="green" scale={1.1}>
           <Plane position={[0, -2.5, 0]} />
           {/*@ts-ignore*/}
           {albums.map(({ cover }, idx) => {
             const x = -2 + Math.floor(Math.random() * 5) + 1;
-            return <Album position={[x, 12, 0]} cover={cover} key={cover} />;
+            return <Album position={[x, 30, 0]} cover={cover} key={cover} />;
           })}
           <Basket />
           <ShoppingCartModel />
