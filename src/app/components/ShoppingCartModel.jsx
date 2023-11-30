@@ -14,14 +14,14 @@ export function ShoppingCartModel(props) {
   const { nodes, materials } = useGLTF("/shopping_cart_opened/scene.gltf");
   return (
     <group {...props} dispose={null}>
-      <group position={[0, 0, 0]} rotation={[-Math.PI / 2, 0, 2.292]}>
+      <group position={[0, 0, 0]} rotation={[-Math.PI / 2, 0, Math.PI * 0.25]}>
         <group rotation={[Math.PI / 2, 0, 0]}>
           <mesh
             geometry={nodes["tocut001_Material_#25_0"].geometry}
             material={materials.Material_25}
-            position={[0, 0, 0]}
+            position={[0, -3, 0]}
             rotation={[-Math.PI / 2, 0, -Math.PI / 4]}
-            scale={[0.3, 0.3, 0.3]}
+            scale={[0.5, 0.5, 0.5]}
           />
         </group>
       </group>
