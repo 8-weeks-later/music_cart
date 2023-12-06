@@ -36,7 +36,7 @@ export default function App() {
             return <Album position={[x, 30, 0]} cover={cover} key={cover} />;
           })}
           <Basket />
-          <ShoppingCartModel />
+          {/*<ShoppingCartModel />*/}
           <OrbitControls
             enablePan={true}
             enableZoom={true}

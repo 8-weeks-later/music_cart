@@ -1,4 +1,5 @@
-import { useBox } from "@react-three/cannon";
+import { useBox, usePlane } from "@react-three/cannon";
+import { TextureLoader } from "three";
 
 function BasketWall({
   width,
@@ -79,8 +80,19 @@ export default function Basket(props: any) {
     },
   };
 
+  const texture = new TextureLoader().load("/basket.jpeg");
+
   return (
     <>
+      <mesh
+        receiveShadow
+        castShadow
+        rotation={[-Math.PI / 2, 0, 0]}
+        position={[0, 3, 0]}
+      >
+        <boxGeometry args={[15, 10, 1]} />
+        <meshBasicMaterial map={texture} />
+      </mesh>
       <BasketWall {...walls.east} />
       <BasketWall {...walls.west} />
       <BasketWall {...walls.south} />
