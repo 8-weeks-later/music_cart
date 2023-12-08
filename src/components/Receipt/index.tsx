@@ -27,6 +27,4 @@ const Container = styled.div`
   background: #fff;
 
   font-family: Galmuri11;
-
-  border: 1px solid;
 `;

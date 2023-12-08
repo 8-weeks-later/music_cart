@@ -17,7 +17,7 @@ export default function TopAlbum() {
           </div>
         </TopAlbumItem>
         <TopAlbumItem>
-          <div className="rank">1</div>
+          <div className="rank">2</div>
           <div className="cover">
             <img
               src="https://i1.sndcdn.com/artworks-jeB67cUz0GJzdP7r-OzRlXw-t500x500.jpg"
@@ -26,7 +26,7 @@ export default function TopAlbum() {
           </div>
         </TopAlbumItem>
         <TopAlbumItem>
-          <div className="rank">1</div>
+          <div className="rank">3</div>
           <div className="cover">
             <img
               src="https://i1.sndcdn.com/artworks-jeB67cUz0GJzdP7r-OzRlXw-t500x500.jpg"
