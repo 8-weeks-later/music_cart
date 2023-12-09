@@ -10,7 +10,7 @@ export default function ThreeCanvas({ children }: any) {
         fov: 45,
       }}
     >
-      <color attach="background" args={["lightblue"]} />
+      <color attach="background" args={["white"]} />
       <ambientLight />
       <directionalLight
         position={[10, 10, 10]}
