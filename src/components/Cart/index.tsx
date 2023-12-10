@@ -29,21 +29,23 @@ export default function Cart() {
     <Container>
       <ThreeCanvas>
         <Physics gravity={[0, -80, 0]}>
-          <Debug color="green" scale={1.1}>
-            <Plane position={[0, -2.5, 0]} />
-            {/*@ts-ignore*/}
-            {albums.map(({ cover }, idx) => {
-              const x = -2 + Math.floor(Math.random() * 5) + 1;
-              return <Album position={[x, 30, 0]} cover={cover} key={cover} />;
-            })}
-            <Basket />
-            {/*<ShoppingCartModel />*/}
-            <OrbitControls
-              enablePan={true}
-              enableZoom={true}
-              enableRotate={true}
-            />
+          {/* TODO 주석 제거 <Debug color="green" scale={1.1}>*/}
+          <Plane position={[0, -2.5, 0]} />
+          {/*@ts-ignore*/}
+          {albums.map(({ cover }, idx) => {
+            const x = -3.1 + Math.floor(Math.random() * 5) + 1;
+            return <Album position={[x, 30, 0]} cover={cover} key={cover} />;
+          })}
+          <Basket />
+          {/*<ShoppingCartModel />*/}
+          {/*  TODO 주석 제거
+          <OrbitControls
+            enablePan={true}
+            enableZoom={true}
+            enableRotate={true}
+          />
           </Debug>
+          */}
         </Physics>
       </ThreeCanvas>
     </Container>
@@ -53,6 +55,6 @@ export default function Cart() {
 const Container = styled.div`
   margin: 0 auto;
 
-  width: 430px;
+  width: 100%;
   height: 720px;
 `;

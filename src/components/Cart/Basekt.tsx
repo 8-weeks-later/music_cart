@@ -3,14 +3,14 @@ import { TextureLoader } from "three";
 
 function BasketWall({
   width,
-  height,
+  length,
   positionX = 0,
   positionY = 0,
   positionZ = 0,
   rotation,
 }: any) {
   const [ref, api] = useBox(() => ({
-    args: [width, height, 0.1],
+    args: [width, length, 0.1],
     position: [positionX, positionY, positionZ],
     rotation,
   }));
@@ -23,15 +23,15 @@ function BasketWall({
 
 function BaseketFloor({
   width,
-  height,
+  length,
   positionY,
 }: {
   width: number;
-  height: number;
+  length: number;
   positionY: number;
 }) {
   const [ref, api] = useBox(() => ({
-    args: [width, height, 0.1],
+    args: [width, length, 0.1],
     rotation: [-Math.PI / 2, 0, 0],
     position: [0, positionY, 0],
   }));
@@ -43,39 +43,40 @@ function BaseketFloor({
 }
 
 export default function Basket(props: any) {
-  const [width, height, positionY] = [10, 8, 4];
-  const [halfWidth, halfHeight] = [
+  const [width, length, height, positionY] = [8, 12, 8, 2];
+  const [halfWidth, halfLength] = [
     Number((width / 2).toFixed(1)),
-    Number((height / 2).toFixed(1)),
+    Number((length / 2).toFixed(1)),
   ];
+  const wallsHeight = 4;
 
   const walls = {
     east: {
-      width,
-      height,
+      width: length,
+      length: wallsHeight,
       positionX: halfWidth,
-      positionY: halfHeight + positionY,
+      positionY: wallsHeight / 2 + positionY,
       rotation: [0, -Math.PI / 2, 0],
     },
     west: {
-      width,
-      height,
+      width: length,
+      length: 4,
       positionX: -halfWidth,
-      positionY: halfHeight + positionY,
+      positionY: wallsHeight / 2 + positionY,
       rotation: [0, -Math.PI / 2, 0],
     },
     south: {
       width,
-      height,
-      positionZ: halfWidth,
-      positionY: halfHeight + positionY,
+      length: 4,
+      positionZ: halfLength,
+      positionY: wallsHeight / 2 + positionY,
       rotation: [0, 0, 0],
     },
     north: {
       width,
-      height,
-      positionZ: -halfWidth,
-      positionY: halfHeight + positionY,
+      length: 4,
+      positionZ: -halfLength,
+      positionY: wallsHeight / 2 + positionY,
       rotation: [0, 0, 0],
     },
   };
@@ -87,8 +88,8 @@ export default function Basket(props: any) {
       <mesh
         receiveShadow
         castShadow
-        rotation={[-Math.PI / 2, 0, 0]}
-        position={[0, 3, 0]}
+        rotation={[-Math.PI / 2, 0, -Math.PI / 2]}
+        position={[0, 1, 0]}
       >
         <boxGeometry args={[15, 10, 1]} />
         <meshBasicMaterial map={texture} />
@@ -97,7 +98,7 @@ export default function Basket(props: any) {
       <BasketWall {...walls.west} />
       <BasketWall {...walls.south} />
       <BasketWall {...walls.north} />
-      <BaseketFloor width={width} height={width} positionY={positionY} />
+      <BaseketFloor width={width} length={length} positionY={positionY} />
     </>
   );
 }
