@@ -58,7 +58,7 @@ const TopAlbumList = styled.div`
   display: flex;
   gap: 10px;
 
-  padding: 0 32px;
+  padding: 0 8.25%;
   margin-bottom: 50px;
 `;
 
@@ -78,9 +78,8 @@ const TopAlbumItem = styled.div`
 
   .cover {
     position: relative;
-    width: 100px;
-    height: 100px;
-    background: gray;
+    width: 100%;
+    height: 100%;
 
     &::after {
       content: "";
@@ -89,12 +88,14 @@ const TopAlbumItem = styled.div`
       top: 0;
 
       width: 100%;
-      height: 100%;
 
       opacity: 1;
       background-image: url("/assets/images/texture.png");
     }
     img {
+      width: 100%;
+      height: auto;
+
       filter: grayscale(1);
     }
   }

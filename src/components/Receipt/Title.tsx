@@ -15,7 +15,7 @@ const Container = styled.div`
   flex-direction: column;
   justify-content: space-between;
 
-  width: 352px;
+  width: 90%;
   height: 80px;
   margin: 0 auto 30px;
   overflow: hidden;

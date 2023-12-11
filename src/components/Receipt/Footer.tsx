@@ -25,8 +25,6 @@ export default function Footer() {
 }
 
 const Container = styled.div`
-  margin-bottom: 56px;
-
   text-align: center;
   font-size: 14px;
 
