@@ -22,7 +22,10 @@ export default function Receipt() {
 
 const Container = styled.div`
   margin: 0 auto;
-  width: 388px;
+  padding: 38px 0 24px;
+  width: 100%;
+  max-width: 388px;
+  min-width: 300px;
 
   background: #fff;
 
