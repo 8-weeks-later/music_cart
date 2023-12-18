@@ -1,23 +1,129 @@
 import { Item, TopAlbum, TopData, TopTrack } from "@/app/api/spotify/type";
+import spotifyInstance, {
+  setAccessToken,
+  setIssueTime,
+  setRefreshToken,
+} from "@/app/api/instance";
+import { NextRequest } from "next/server";
 
-export function GET() {
-  const accessToken = "";
-  const timeStamps = get30DaysTimeSamp();
+export async function POST(request: NextRequest) {
+  const { accessToken, refreshToken, issueTime } = await request.json();
+  setAccessToken(accessToken);
+  setRefreshToken(refreshToken);
+  setIssueTime(issueTime);
 
+  const today = Date.now();
+  const timestamp = (today - 30 * 24 * 60 * 60 * 1000).toString();
+
+  // @ts-ignore
+  const { topAlbum, topTrack } = await fetchSpotifyRecentlyPlayedWith30Days({
+    timestamp,
+    today: today.toString(),
+    topData: {
+      topTrack: {},
+      topAlbum: {},
+    },
+  });
+
+  return Response.json({ topAlbum, topTrack });
+}
+
+/**
+ * 30일 전부터 오늘까지의 재생 기록을 가져옵니다.
+ * @param timestamp
+ * @param today
+ * @param topData
+ */
+async function fetchSpotifyRecentlyPlayedWith30Days({
+  timestamp,
+  today,
+  topData,
+}: {
+  timestamp: string;
+  today: string;
+  topData: {
+    topAlbum: TopAlbum;
+    topTrack: TopTrack;
+  };
+}) {
+  // 이후 데이터가 없음
+  if (!timestamp) {
+    return topData;
+  }
+  // 오늘까지의 데이터를 가져옴
+  if (timestamp === today) {
+    return topData;
+  }
+
+  try {
+    const data = await fetchSpotifyRecentlyPlayed({ timestamp });
+    timestamp = data?.cursors?.after || null;
+
+    const recentlyPlayedTopData = countTopData({ data });
+    const { topAlbumData: topAlbumData_, topTrackData: topTrackData_ } =
+      countTotalTopData({
+        topTrackData: topData.topTrack,
+        topAlbumData: topData.topAlbum,
+        topData: recentlyPlayedTopData,
+      });
+    topData.topAlbum = topAlbumData_;
+    topData.topTrack = topTrackData_;
+  } catch (e) {
+    return Promise.reject(e);
+  }
+
+  return await fetchSpotifyRecentlyPlayedWith30Days({
+    timestamp,
+    today,
+    topData,
+  });
+}
+
+/**
+async function fetchSpotifyRecentlyPlayedWith30Days({
+  timeStamps,
+}: {
+  timeStamps: number[];
+}) {
   let topAlbumData: TopAlbum = {}; // 앨범 횟수 데이터
   let topTrackData: TopTrack = {}; // 트랙 횟수 데이터
 
-  timeStamps.map((timestamp) => {
-    const data = fetchSpotifyRecentlyPlayed({ timestamp, accessToken });
-    const topData = countTopData({ data });
+  await Promise.all(
+    timeStamps.map(async (timestamp) => {
+      try {
+        const data = await fetchSpotifyRecentlyPlayed({ timestamp });
+        const topData = countTopData({ data });
 
-    const { topAlbumData: topAlbumData_, topTrackData: topTrackData_ } =
-      countTotalTopData({ topTrackData, topAlbumData, topData });
-    topAlbumData = topAlbumData_;
-    topTrackData = topTrackData_;
-  });
+        const { topAlbumData: topAlbumData_, topTrackData: topTrackData_ } =
+          countTotalTopData({ topTrackData, topAlbumData, topData });
+        topAlbumData = topAlbumData_;
+        topTrackData = topTrackData_;
+      } catch (e) {
+        console.log(e);
+      }
+    }),
+  );
 
-  return Response.json({ name: "John Doe" });
+  return { topAlbumData, topTrackData };
+}
+*/
+
+/**
+ * 발급받은 accessToken이 유요한지 확인합니다.
+ * @param expiresIn
+ * @param issueTime 토큰 발급 시간
+ */
+function isTokenExpiredWithIssueTime({
+  expiresIn,
+  issueTime,
+}: {
+  expiresIn: number;
+  issueTime: number;
+}) {
+  const now = Date.now();
+  const expirationTime = issueTime + expiresIn;
+
+  return now >= expirationTime;
 }
 
 /**
@@ -32,23 +138,19 @@ function get30DaysTimeSamp() {
 }
 
 async function fetchSpotifyRecentlyPlayed({
-  accessToken,
   timestamp,
 }: {
-  accessToken: string;
-  timestamp: number;
+  timestamp: string;
 }) {
-  const res = await fetch(
+  const res = await spotifyInstance.get(
     `https://api.spotify.com/v1/me/player/recently-played?limit=50&after=${timestamp}`,
-    {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-    },
   );
 
-  const data = res.json();
-  return data;
+  if (res.status !== 200) {
+    return Promise.reject(res);
+  }
+
+  return res.data;
 }
 
 /**
@@ -131,4 +233,4 @@ function countTotalTopData({
   return { topAlbumData: topAlbumData_, topTrackData: topTrackData_ };
 }
 
-export { countTopData, countTotalTopData };
+export { countTopData, countTotalTopData, isTokenExpiredWithIssueTime };
