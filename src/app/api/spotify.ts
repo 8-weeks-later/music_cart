@@ -1,6 +1,14 @@
-import { SPOTIFY_REDIRECT_URI } from "@/constants";
+import { SPOTIFY_CLIENT_ID, SPOTIFY_REDIRECT_URI } from "@/constants";
 
-async function getAccessToken(clientId: string, code: string): Promise<string> {
+async function fetchAccessToken(
+  clientId: string,
+  code: string,
+): Promise<{
+  accessToken: string;
+  expiresIn: number;
+  issueTime: number;
+  refreshToken: string;
+}> {
   const verifier = localStorage.getItem("verifier");
 
   const params = new URLSearchParams();
@@ -16,8 +24,61 @@ async function getAccessToken(clientId: string, code: string): Promise<string> {
     body: params,
   });
 
-  const { access_token } = await result.json();
-  return access_token;
+  if (!result.ok) {
+    return Promise.reject(result);
+  }
+
+  const {
+    access_token: accessToken,
+    expires_in: expiresIn,
+    refresh_token: refreshToken,
+  } = await result.json();
+  const issueTime = new Date().getTime();
+  return {
+    accessToken,
+    expiresIn,
+    issueTime,
+    refreshToken,
+  };
 }
 
-export { getAccessToken };
+async function fetchRefreshToken({
+  refreshToken,
+}: {
+  refreshToken: string;
+}): Promise<{
+  accessToken: string;
+  expiresIn: number;
+  issueTime: number;
+  refreshToken: string;
+}> {
+  const url = "https://accounts.spotify.com/api/token";
+
+  const payload = {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded",
+    },
+    body: new URLSearchParams({
+      grant_type: "refresh_token",
+      refresh_token: refreshToken,
+      client_id: SPOTIFY_CLIENT_ID,
+    }),
+  };
+  const result = await fetch(url, payload);
+
+  const {
+    access_token: accessToken,
+    expires_in: expiresIn,
+    refresh_token,
+  } = await result.json();
+  const issueTime = new Date().getTime();
+  return {
+    accessToken,
+    expiresIn,
+    issueTime,
+    refreshToken: refresh_token,
+  };
+}
+
+export { fetchAccessToken, fetchRefreshToken };
