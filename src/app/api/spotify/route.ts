@@ -16,7 +16,7 @@ export async function POST(request: NextRequest) {
   const timestamp = (today - 30 * 24 * 60 * 60 * 1000).toString();
 
   // @ts-ignore
-  const { topAlbum, topTrack } = await fetchSpotifyRecentlyPlayedWith30Days({
+  const topData = await fetchSpotifyRecentlyPlayedWith30Days({
     timestamp,
     today: today.toString(),
     topData: {
@@ -25,7 +25,31 @@ export async function POST(request: NextRequest) {
     },
   });
 
+  const { topAlbum, topTrack } = sortByCountDescending({ topData });
+
   return Response.json({ topAlbum, topTrack });
+}
+
+/**
+ * 들은 횟수 내림차 순으로 정렬
+ * @param topData
+ */
+function sortByCountDescending({
+  topData,
+}: {
+  topData: { topTrack: TopTrack; topAlbum: TopAlbum };
+}) {
+  const topTrack = Object.values(topData.topTrack)
+    .sort((a, b) => b.count - a.count)
+    .slice(0, 10);
+  const topAlbum = Object.values(topData.topAlbum)
+    .sort((a, b) => b.count - a.count)
+    .slice(0, 10);
+
+  return {
+    topTrack,
+    topAlbum,
+  };
 }
 
 /**
