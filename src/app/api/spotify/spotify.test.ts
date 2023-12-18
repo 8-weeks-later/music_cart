@@ -1,5 +1,9 @@
 import { describe, expect, test } from "@jest/globals";
-import { countTopData, countTotalTopData } from "@/app/api/spotify/route";
+import {
+  countTopData,
+  countTotalTopData,
+  isTokenExpiredWithIssueTime,
+} from "@/app/api/spotify/route";
 
 describe("앨범과 노래를 들은 횟수를 카운트 한다.", () => {
   test("앨범과 노래를 들은 횟수를 카운트", () => {
@@ -1150,4 +1154,20 @@ describe("앨범과 노래를 들은 횟수를 카운트 한다.", () => {
       },
     ],
   };
+});
+
+describe("현재 토큰이 유효한지 판별한다.", () => {
+  test("현재 토큰이 유요함", () => {
+    expect(
+      isTokenExpiredWithIssueTime({ expiresIn: 3600, issueTime: Date.now() }),
+    ).toBe(false);
+  });
+  test("현재 토큰이 만료됨", () => {
+    expect(
+      isTokenExpiredWithIssueTime({
+        expiresIn: 3600,
+        issueTime: Date.now() - 3600,
+      }),
+    ).toBe(true);
+  });
 });
