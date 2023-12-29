@@ -1,5 +1,11 @@
 import Receipt from "@/components/Receipt";
+import Cart from "@/components/Cart";
 
 export default function Result() {
-  return <Receipt />;
+  return (
+    <>
+      <Cart />
+      <Receipt />
+    </>
+  );
 }
