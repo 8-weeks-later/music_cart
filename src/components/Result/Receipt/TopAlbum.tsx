@@ -1,21 +1,21 @@
-import Title from "@/components/Receipt/Title";
+import Title from "@/components/Result/Receipt/Title";
 import styled from "@emotion/styled";
 
-export default function TopAlbum() {
+export default function TopAlbum({ topAlbum }: { topAlbum: any[] }) {
   return (
     <section style={{ marginBottom: "40px" }}>
       <Title>당신이 가장 많이 들은 앨범</Title>
 
       <TopAlbumList>
-        <TopAlbumItem>
-          <div className="rank">1</div>
-          <div className="cover">
-            <img
-              src="https://i1.sndcdn.com/artworks-jeB67cUz0GJzdP7r-OzRlXw-t500x500.jpg"
-              alt="name"
-            />
-          </div>
-        </TopAlbumItem>
+        {topAlbum.map((album) => (
+          <TopAlbumItem>
+            <div className="rank">1</div>
+            <div className="cover">
+              <img src={album.cover.url} alt="name" />
+            </div>
+          </TopAlbumItem>
+        ))}
+
         <TopAlbumItem>
           <div className="rank">2</div>
           <div className="cover">
