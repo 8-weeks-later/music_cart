@@ -1,30 +1,16 @@
 "use client";
 
-import { OrbitControls } from "@react-three/drei";
-import { Physics, Debug } from "@react-three/cannon";
+import { Physics } from "@react-three/cannon";
 import Album from "@/components/Cart/Album";
 
 import ShoppingCartModel from "@/components/Cart/ShoppingCartModel";
 import Plane from "@/components/Cart/Plane";
 import Basket from "@/components/Cart/Basekt";
 import ThreeCanvas from "@/components/Cart/ThreeCanvas";
-import { getAlbumList } from "@/api/appleMusic";
-import { useEffect, useState } from "react";
 import styled from "@emotion/styled";
+import { TopAlbum } from "@/app/api/spotify/type";
 
-export default function Cart() {
-  const [albums, setAlbums] = useState([]);
-
-  useEffect(() => {
-    const alubmList = async () => {
-      const data = await getAlbumList();
-      // @ts-ignore
-      setAlbums(data);
-    };
-
-    alubmList();
-  });
-
+export default function Cart({ albums }: { albums: TopAlbum[] }) {
   return (
     <Container>
       <ThreeCanvas>
