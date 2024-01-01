@@ -1,54 +1,36 @@
 import Title from "@/components/Result/Receipt/Title";
 import styled from "@emotion/styled";
 
-export default function TopAlbum({ topAlbum }: { topAlbum: any[] }) {
+import { TopAlbum } from "@/components/Result/type";
+
+export default function TopAlbum({
+  topAlbum: topAlbumData,
+}: {
+  topAlbum: TopAlbum[];
+}) {
+  const topAlbum = topAlbumData.slice(0, 3);
+
   return (
     <section style={{ marginBottom: "40px" }}>
       <Title>당신이 가장 많이 들은 앨범</Title>
 
       <TopAlbumList>
-        {topAlbum.map((album) => (
-          <TopAlbumItem>
-            <div className="rank">1</div>
+        {topAlbum.map((album, idx) => (
+          <TopAlbumItem key={album.name}>
+            <div className="rank">{idx + 1}</div>
             <div className="cover">
               <img src={album.cover.url} alt="name" />
             </div>
           </TopAlbumItem>
         ))}
-
-        <TopAlbumItem>
-          <div className="rank">2</div>
-          <div className="cover">
-            <img
-              src="https://i1.sndcdn.com/artworks-jeB67cUz0GJzdP7r-OzRlXw-t500x500.jpg"
-              alt="name"
-            />
-          </div>
-        </TopAlbumItem>
-        <TopAlbumItem>
-          <div className="rank">3</div>
-          <div className="cover">
-            <img
-              src="https://i1.sndcdn.com/artworks-jeB67cUz0GJzdP7r-OzRlXw-t500x500.jpg"
-              alt="name"
-            />
-          </div>
-        </TopAlbumItem>
       </TopAlbumList>
       <List>
-        <Item>
-          <span className="name">New Jeans’ OMG</span>
-          <span className="count">12.308</span>
-        </Item>
-        <Item>
-          <span className="name">UNFORGIVEN</span>
-          <span className="count">12.308</span>
-        </Item>
-
-        <Item>
-          <span className="name">Red Flavor</span>
-          <span className="count">12.308</span>
-        </Item>
+        {topAlbum.map((album, idx) => (
+          <Item>
+            <span className="name">{album.name}</span>
+            <span className="count">{album.count}</span>
+          </Item>
+        ))}
       </List>
     </section>
   );

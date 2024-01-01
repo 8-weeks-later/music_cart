@@ -1,10 +1,19 @@
 "use client";
+
 import styled from "@emotion/styled";
 
 import Logo from "@/components/Home/Logo";
 import Album from "@/components/Home/Album";
+import Link from "next/link";
+import { redirectToAuthCodeFlow } from "@/utils/spotify";
+import { useEffect, useState } from "react";
 
 export default function Home() {
+  const [redirectURI, setRedirectURI] = useState("");
+  useEffect(() => {
+    redirectToAuthCodeFlow().then((uri) => setRedirectURI(uri));
+  }, []);
+
   return (
     <Container>
       <Logo />
@@ -17,7 +26,9 @@ export default function Home() {
         <Album />
       </Cart>
       <LoginWrapper>
-        <SpotifyButton>Spotify로 계속하기</SpotifyButton>
+        <a href={redirectURI}>
+          <SpotifyButton>Spotify로 계속하기</SpotifyButton>
+        </a>
       </LoginWrapper>
     </Container>
   );

@@ -1,72 +1,33 @@
 import styled from "@emotion/styled";
-import Title from "@/components/Receipt/Title";
+import Title from "@/components/Result/Receipt/Title";
+import { TopTrack } from "@/components/Result/type";
 
-export default function FavTracks() {
+export default function FavTracks({ topTrack }: { topTrack: TopTrack[] }) {
   return (
     <section style={{ marginBottom: "40px" }}>
       <Title>당신이 가장 많이 들은 곡</Title>
 
       <TrackList>
-        <TrackItem>
-          <div className="track">
-            <span className="rank">①</span>
-            <div className="track-info">
-              <div className="cover">
-                <span>
-                  <img
-                    src="https://i1.sndcdn.com/artworks-jeB67cUz0GJzdP7r-OzRlXw-t500x500.jpg"
-                    alt="name"
-                  />
-                </span>
-              </div>
-              <div className="info">
-                <p className="name">RedFlavor</p>
-                <p className="artist">레드벨벳</p>
-              </div>
-            </div>
-          </div>
-          <span className="count">12.308회</span>
-        </TrackItem>
-        <TrackItem>
-          <div className="track">
-            <span className="rank">①</span>
-            <div className="track-info">
-              <div className="cover">
-                <span>
-                  <img
-                    src="https://i1.sndcdn.com/artworks-jeB67cUz0GJzdP7r-OzRlXw-t500x500.jpg"
-                    alt="name"
-                  />
-                </span>
-              </div>
-              <div className="info">
-                <p className="name">RedFlavor</p>
-                <p className="artist">레드벨벳</p>
+        {topTrack.map((track, idx) => (
+          <TrackItem>
+            <div className="track">
+              {/*①의 아스키 코드 값*/}
+              <span className="rank">{String.fromCharCode(9312 + idx)}</span>
+              <div className="track-info">
+                <div className="cover">
+                  <span>
+                    <img src={track.cover.url} alt="name" />
+                  </span>
+                </div>
+                <div className="info">
+                  <p className="name">{track.name}</p>
+                  <p className="artist">{track.artist}</p>
+                </div>
               </div>
             </div>
-          </div>
-          <span className="count">12.308회</span>
-        </TrackItem>
-        <TrackItem>
-          <div className="track">
-            <span className="rank">①</span>
-            <div className="track-info">
-              <div className="cover">
-                <span>
-                  <img
-                    src="https://i1.sndcdn.com/artworks-jeB67cUz0GJzdP7r-OzRlXw-t500x500.jpg"
-                    alt="name"
-                  />
-                </span>
-              </div>
-              <div className="info">
-                <p className="name">RedFlavor</p>
-                <p className="artist">레드벨벳</p>
-              </div>
-            </div>
-          </div>
-          <span className="count">12.308회</span>
-        </TrackItem>
+            <span className="count">{track.count}회</span>
+          </TrackItem>
+        ))}
       </TrackList>
     </section>
   );
