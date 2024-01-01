@@ -7,7 +7,7 @@ import Header from "@/components/Result/Receipt/Header";
 import TopAlbum from "@/components/Result/Receipt/TopAlbum";
 import FavTracks from "@/components/Result/Receipt/FavTracks";
 import Footer from "@/components/Result/Receipt/Footer";
-import { TopAlbum as TTopAlbum, TopTrack } from "@/app/api/spotify/type";
+import { TopAlbum as TTopAlbum, TopTrack } from "@/components/Result/type";
 
 export default function Receipt({
   track,
@@ -25,8 +25,8 @@ export default function Receipt({
     <Container>
       <Logo />
       <Header />
-      <TopAlbum />
-      <FavTracks />
+      <TopAlbum topAlbum={track.topAlbum} />
+      <FavTracks topTrack={track.topTrack} />
       <Footer />
     </Container>
   );

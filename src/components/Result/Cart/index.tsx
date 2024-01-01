@@ -1,14 +1,14 @@
 "use client";
 
 import { Physics } from "@react-three/cannon";
-import Album from "@/components/Cart/Album";
+import Album from "@/components/Result/Cart/Album";
 
-import ShoppingCartModel from "@/components/Cart/ShoppingCartModel";
-import Plane from "@/components/Cart/Plane";
-import Basket from "@/components/Cart/Basekt";
-import ThreeCanvas from "@/components/Cart/ThreeCanvas";
+import ShoppingCartModel from "@/components/Result/Cart/ShoppingCartModel";
+import Plane from "@/components/Result/Cart/Plane";
+import Basket from "@/components/Result/Cart/Basekt";
+import ThreeCanvas from "@/components/Result/Cart/ThreeCanvas";
 import styled from "@emotion/styled";
-import { TopAlbum } from "@/app/api/spotify/type";
+import { TopAlbum } from "@/components/Result/type";
 
 export default function Cart({ albums }: { albums: TopAlbum[] }) {
   return (
@@ -20,7 +20,9 @@ export default function Cart({ albums }: { albums: TopAlbum[] }) {
           {/*@ts-ignore*/}
           {albums.map(({ cover }, idx) => {
             const x = -3.1 + Math.floor(Math.random() * 5) + 1;
-            return <Album position={[x, 30, 0]} cover={cover} key={cover} />;
+            return (
+              <Album position={[x, 30, 0]} cover={cover.url} key={cover} />
+            );
           })}
           <Basket />
           <ShoppingCartModel

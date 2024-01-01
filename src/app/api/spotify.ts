@@ -1,4 +1,11 @@
+import axios from "axios";
+
 import { SPOTIFY_CLIENT_ID, SPOTIFY_REDIRECT_URI } from "@/constants";
+import {
+  getAccessToken,
+  getIssueTime,
+  getRefreshToken,
+} from "@/app/api/instance";
 
 async function fetchAccessToken(
   clientId: string,
@@ -81,4 +88,17 @@ async function fetchRefreshToken({
   };
 }
 
-export { fetchAccessToken, fetchRefreshToken };
+const fetchRecentlyPlayedMusic = async () => {
+  try {
+    const { data } = await axios.post("/api/spotify", {
+      accessToken: getAccessToken(),
+      refreshToken: getRefreshToken(),
+      issueTime: getIssueTime(),
+    });
+    return data;
+  } catch (e) {
+    return e;
+  }
+};
+
+export { fetchAccessToken, fetchRefreshToken, fetchRecentlyPlayedMusic };
