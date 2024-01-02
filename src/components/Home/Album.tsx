@@ -1,19 +1,23 @@
 import styled from "@emotion/styled";
+import { css } from "@emotion/react";
 
 function AlbumItem({
   top,
   left,
   right,
   bottom,
+  rotate,
 }: {
   top?: string;
   left?: string;
   right?: string;
   bottom?: string;
+  rotate?: boolean;
 }) {
+  console.log("rotate", rotate);
   return (
     <Scene style={{ top, left, right, bottom }}>
-      <Cube>
+      <Cube $rotate={rotate}>
         <Front>?</Front>
         <Back>?</Back>
         <Right />
@@ -28,9 +32,9 @@ function AlbumItem({
 export default function Album() {
   return (
     <>
-      <AlbumItem top="61px" left="56px" />
-      <AlbumItem top="154px" right="31px" />
-      <AlbumItem top="263px" left="56px" />
+      <AlbumItem top="61px" left="56px" rotate={false} />
+      <AlbumItem top="154px" right="31px" rotate />
+      <AlbumItem top="263px" left="56px" rotate={false} />
     </>
   );
 }
@@ -48,8 +52,8 @@ const Scene = styled.div`
   perspective: 600px;
 `;
 
-const Cube = styled.div`
-  @keyframes rotation {
+const Cube = styled.div<{ $rotate?: boolean }>`
+  @keyframes regularRotation {
     0% {
       transform: translateZ(-100px) rotate3d(0, 1, 0, 0deg);
     }
@@ -58,14 +62,26 @@ const Cube = styled.div`
     }
   }
 
+  @keyframes mutatedRotation {
+    0% {
+      transform: translateZ(-100px) rotate3d(0, 1, 0, 20deg);
+    }
+    100% {
+      transform: translateZ(-100px) rotate3d(0, 1, 0, 200deg);
+    }
+  }
+
   position: relative;
 
   width: 100%;
   height: 100%;
 
-  transform: translateZ(-100px);
+  transform: translateZ(-100px)
+    ${({ $rotate }) => $rotate && `rotate3d(0, 1, 0, 40deg)`};
   transform-style: preserve-3d;
-  animation: rotation 2s linear infinite;
+  animation: ${({ $rotate }) =>
+      $rotate ? `mutatedRotation` : `regularRotation`}
+    2s linear infinite;
 `;
 
 const Face = styled.div`
