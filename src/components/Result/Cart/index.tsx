@@ -1,30 +1,15 @@
 "use client";
 
-import { ShoppingCartModel } from "@/components/Cart/ShoppingCartModel";
-import { OrbitControls } from "@react-three/drei";
-import { Physics, Debug } from "@react-three/cannon";
+import Album from "@/components/Result/Cart/Album";
+import { Physics } from "@react-three/cannon";
 
-import Album from "@/components/Cart/Album";
-import Plane from "@/components/Cart/Plane";
-import Basket from "@/components/Cart/Basekt";
-import ThreeCanvas from "@/components/Cart/ThreeCanvas";
-import { getAlbumList } from "@/api/appleMusic";
-import { useEffect, useState } from "react";
+import Basket from "@/components/Result/Cart/Basekt";
+import Plane from "@/components/Result/Cart/Plane";
+import ThreeCanvas from "@/components/Result/Cart/ThreeCanvas";
+import { TopAlbum } from "@/components/Result/type";
 import styled from "@emotion/styled";
 
-export default function Cart() {
-  const [albums, setAlbums] = useState([]);
-
-  useEffect(() => {
-    const alubmList = async () => {
-      const data = await getAlbumList();
-      // @ts-ignore
-      setAlbums(data);
-    };
-
-    alubmList();
-  });
-
+export default function Cart({ albums }: { albums: TopAlbum[] }) {
   return (
     <Container>
       <ThreeCanvas>
@@ -34,7 +19,9 @@ export default function Cart() {
           {/*@ts-ignore*/}
           {albums.map(({ cover }, idx) => {
             const x = -3.1 + Math.floor(Math.random() * 5) + 1;
-            return <Album position={[x, 30, 0]} cover={cover} key={cover} />;
+            return (
+              <Album position={[x, 30, 0]} cover={cover.url} key={cover} />
+            );
           })}
           <Basket />
           {/*<ShoppingCartModel />*/}
