@@ -17,8 +17,6 @@ export async function POST(request: NextRequest) {
 
   // @ts-ignore
   const topData = await fetchSpotifyRecentlyPlayedWith30Days({
-    timestamp,
-    today: today.toString(),
     topData: {
       topTrack: {},
       topAlbum: {},
@@ -58,6 +56,7 @@ function sortByCountDescending({
  * @param today
  * @param topData
  */
+/**
 async function fetchSpotifyRecentlyPlayedWith30Days({
   timestamp,
   today,
@@ -102,35 +101,45 @@ async function fetchSpotifyRecentlyPlayedWith30Days({
     topData,
   });
 }
+*/
 
-/**
-async function fetchSpotifyRecentlyPlayedWith30Days({
-  timeStamps,
-}: {
-  timeStamps: number[];
-}) {
+async function fetchSpotifyRecentlyPlayedWith30Days() {
+  // 현재부터 30일 전까지의 타임스탬프를 반환합니다.
+  const get30DaysTimeSamp = () => {
+    const timestamp: string[] = [];
+    const date = Date.now();
+    for (let i = 1; i < 31; i += 1) {
+      timestamp.push(
+        new Date(date - i * 24 * 60 * 60 * 1000).getTime().toString(),
+      );
+    }
+    return timestamp;
+  };
+
+  const timestamps = get30DaysTimeSamp();
+
   let topAlbumData: TopAlbum = {}; // 앨범 횟수 데이터
   let topTrackData: TopTrack = {}; // 트랙 횟수 데이터
 
-  await Promise.all(
-    timeStamps.map(async (timestamp) => {
-      try {
-        const data = await fetchSpotifyRecentlyPlayed({ timestamp });
-        const topData = countTopData({ data });
+  for (const timestamp of timestamps) {
+    try {
+      const data = await fetchSpotifyRecentlyPlayed({ timestamp });
+      const topData = countTopData({ data });
 
-        const { topAlbumData: topAlbumData_, topTrackData: topTrackData_ } =
-          countTotalTopData({ topTrackData, topAlbumData, topData });
-        topAlbumData = topAlbumData_;
-        topTrackData = topTrackData_;
-      } catch (e) {
-        console.log(e);
-      }
-    }),
-  );
+      const { topAlbumData: topAlbumData_, topTrackData: topTrackData_ } =
+        countTotalTopData({ topTrackData, topAlbumData, topData });
+      topAlbumData = topAlbumData_;
+      topTrackData = topTrackData_;
+    } catch (e) {
+      return Promise.reject(e);
+    }
+  }
 
-  return { topAlbumData, topTrackData };
+  return {
+    topAlbum: topAlbumData,
+    topTrack: topTrackData,
+  };
 }
-*/
 
 /**
  * 발급받은 accessToken이 유요한지 확인합니다.
@@ -148,17 +157,6 @@ function isTokenExpiredWithIssueTime({
   const expirationTime = issueTime + expiresIn;
 
   return now >= expirationTime;
-}
-
-/**
- * 현재부터 30일 전까지의 타임스탬프를 반환합니다.
- */
-function get30DaysTimeSamp() {
-  const timestamp: number[] = [];
-  for (let i = 1; i <= 30; i += 1) {
-    timestamp.push(new Date(Date.now() - i * 24 * 60 * 60 * 1000).getTime());
-  }
-  return timestamp;
 }
 
 async function fetchSpotifyRecentlyPlayed({
