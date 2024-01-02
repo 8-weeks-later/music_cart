@@ -7,6 +7,8 @@ import Album from "@/components/Home/Album";
 import Link from "next/link";
 import { redirectToAuthCodeFlow } from "@/utils/spotify";
 import { useEffect, useState } from "react";
+import Image from "next/image";
+import { rotate } from "maath/buffer";
 
 export default function Home() {
   const [redirectURI, setRedirectURI] = useState("");
@@ -22,7 +24,9 @@ export default function Home() {
         <br /> 뮤직마켓에서 영수증으로 뽑아보세요.
       </Text>
       <Cart>
-        <div className="img"></div>
+        <Basket>
+          <img src="/assets/images/basket.jpeg" />
+        </Basket>
         <Album />
       </Cart>
       <LoginWrapper>
@@ -54,15 +58,21 @@ const Container = styled.div`
 
 const Cart = styled.div`
   position: relative;
+  left: 0;
+  top: 0;
 
-  margin: 0 52px 77px;
+  margin: 52px auto 77px;
 
-  .img {
-    //position: absolute;
-    left: 0;
-    top: 0;
+  width: 325px;
+  height: 497px;
+`;
 
-    width: 325px;
+const Basket = styled.div`
+  position: absolute;
+  top: 0;
+
+  img {
+    width: 100%;
     height: 497px;
   }
 `;
