@@ -6,23 +6,39 @@ export default function Logo() {
     <Container>
       <LogoText>
         <span>뮤직마켓</span>
-        <Image
-          alt="logo"
-          src="/assets/images/logo.png"
-          width={55}
-          height={46}
-        />
+        <LogoWrapper>
+          <Image
+            src="/assets/images/logo.png"
+            alt="logo"
+            sizes="55px"
+            fill
+            style={{
+              objectFit: "contain",
+            }}
+          />
+        </LogoWrapper>
       </LogoText>
     </Container>
   );
 }
 
 const Container = styled.div`
-  margin: 20px 0 32px;
-  padding: 7px 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 
-  border-top: 14px solid #10299f;
-  border-bottom: 14px solid #10299f;
+  margin-top: 14px;
+  padding: 5px 0;
+  height: 78px;
+
+  border-top: 12px solid #10299f;
+  border-bottom: 12px solid #10299f;
+`;
+
+const LogoWrapper = styled.div`
+  position: relative;
+  width: 47px;
+  height: 41px;
 `;
 
 const LogoText = styled.div`
@@ -31,7 +47,7 @@ const LogoText = styled.div`
 
   color: #10299f;
 
-  font-size: 40px;
+  font-size: 32px;
   font-style: normal;
   font-weight: 700;
 `;

@@ -1,13 +1,13 @@
 "use client";
 
-import styled from "@emotion/styled";
-
 import Logo from "@/components/Result/Receipt/Logo";
 import Header from "@/components/Result/Receipt/Header";
 import TopAlbum from "@/components/Result/Receipt/TopAlbum";
 import FavTracks from "@/components/Result/Receipt/FavTracks";
 import Footer from "@/components/Result/Receipt/Footer";
 import { TopAlbum as TTopAlbum, TopTrack } from "@/components/Result/type";
+import { Container } from "@/components/Common/Container.styled";
+import styled from "@emotion/styled";
 
 export default function Receipt({
   track,
@@ -22,24 +22,16 @@ export default function Receipt({
   }
 
   return (
-    <Container>
+    <ReceiptContainer>
       <Logo />
       <Header />
       <TopAlbum topAlbum={track.topAlbum} />
       <FavTracks topTrack={track.topTrack} />
       <Footer />
-    </Container>
+    </ReceiptContainer>
   );
 }
 
-const Container = styled.div`
-  margin: 0 auto;
+export const ReceiptContainer = styled(Container)`
   padding: 38px 0 24px;
-  width: 100%;
-  max-width: 388px;
-  min-width: 300px;
-
-  background: #fff;
-
-  font-family: Galmuri11;
 `;
