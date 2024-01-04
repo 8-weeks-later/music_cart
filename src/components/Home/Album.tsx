@@ -14,7 +14,6 @@ function AlbumItem({
   bottom?: string;
   rotate?: boolean;
 }) {
-  console.log("rotate", rotate);
   return (
     <Scene style={{ top, left, right, bottom }}>
       <Cube $rotate={rotate}>
