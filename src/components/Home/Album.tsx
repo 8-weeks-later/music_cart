@@ -1,4 +1,5 @@
 import styled from "@emotion/styled";
+import { useEffect, useState } from "react";
 import { css } from "@emotion/react";
 
 function AlbumItem({
@@ -7,48 +8,82 @@ function AlbumItem({
   right,
   bottom,
   rotate,
+  width,
+  height,
 }: {
   top?: string;
   left?: string;
   right?: string;
   bottom?: string;
   rotate?: boolean;
+  width: number;
+  height: number;
 }) {
   return (
-    <Scene style={{ top, left, right, bottom }}>
+    <Scene style={{ top, left, right, bottom }} $width={width} $height={height}>
       <Cube $rotate={rotate}>
-        <Front>?</Front>
-        <Back>?</Back>
-        <Right />
-        <Left />
-        <Bottom />
-        <Top />
+        <Front $width={width} $height={height}>
+          ?
+        </Front>
+        <Back $width={width} $height={height}>
+          ?
+        </Back>
+        <Right $width={width} $height={height} />
+        <Left $width={width} $height={height} />
+        <Bottom $width={width} $height={height} />
+        <Top $width={width} $height={height} />
       </Cube>
     </Scene>
   );
 }
 
 export default function Album() {
+  const [{ width, height }, setWindowDimensions] = useState<{
+    width: number;
+    height: number;
+  }>({ width: 135, height: 135 });
+
+  console.log(width, height);
+
+  useEffect(() => {
+    function getWindowDimensions() {
+      const { innerWidth, innerHeight } = window;
+
+      // 앨범 px
+      const width = innerHeight >= 736 ? 135 : 95;
+
+      return {
+        width: width,
+        height: width,
+      };
+    }
+    function handleResize() {
+      setWindowDimensions(getWindowDimensions());
+    }
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   return (
     <>
-      <AlbumItem top="61px" left="56px" rotate={false} />
-      <AlbumItem top="154px" right="31px" rotate />
-      <AlbumItem top="263px" left="56px" rotate={false} />
+      <AlbumItem top="7.2%" left="16.7%" width={width} height={height} />
+      <AlbumItem top="31%" right="9.2%" rotate width={width} height={height} />
+      <AlbumItem top="52.9%" left="16.7%" width={width} height={height} />
     </>
   );
 }
 
-const width = 152;
-const height = 152;
 const depth = 20;
 
-const Scene = styled.div`
+const Scene = styled.div<{ $width: number; $height: number }>`
   position: absolute;
 
-  width: ${width}px;
-  height: ${height}px;
-
+  width: ${({ $width }) => `${$width}px`};
+  height: ${({ $height }) => `${$height}px`};
   perspective: 600px;
+
+  //background: pink;
 `;
 
 const Cube = styled.div<{ $rotate?: boolean }>`
@@ -95,48 +130,48 @@ const Face = styled.div`
   color: #fff;
 `;
 
-const Front = styled(Face)`
-  width: ${width}px;
-  height: ${height}px;
+const Front = styled(Face)<{ $width: number; $height: number }>`
+  width: ${({ $width }) => `${$width}px`};
+  height: ${({ $height }) => `${$height}px`};
 
   transform: translateZ(${depth / 2}px);
 `;
 
-const Back = styled(Face)`
-  width: ${width}px;
-  height: ${height}px;
+const Back = styled(Face)<{ $width: number; $height: number }>`
+  width: ${({ $width }) => `${$width}px`};
+  height: ${({ $height }) => `${$height}px`};
 
   transform: rotateY(180deg) translateZ(${depth / 2}px);
 `;
 
-const Right = styled(Face)`
+const Right = styled(Face)<{ $width: number; $height: number }>`
   width: ${depth}px;
-  height: ${height}px;
+  height: ${({ $height }) => `${$height}px`};
 
-  right: ${(width - depth) / 2}px;
-  transform: rotateY(90deg) translateZ(${width / 2}px);
+  right: ${({ $width }) => `${($width - depth) / 2}px`};
+  transform: rotateY(90deg) ${({ $width }) => `translateZ(${$width / 2}px)`};
 `;
 
-const Left = styled(Face)`
+const Left = styled(Face)<{ $width: number; $height: number }>`
   width: ${depth}px;
-  height: ${height}px;
+  height: ${({ $height }) => `${$height}px`};
 
-  left: ${(width - depth) / 2}px;
-  transform: rotateY(-90deg) translateZ(${width / 2}px);
+  left: ${({ $width }) => `${($width - depth) / 2}px`};
+  transform: rotateY(-90deg) ${({ $width }) => `translateZ(${$width / 2}px)`};
 `;
 
-const Top = styled(Face)`
+const Top = styled(Face)<{ $width: number; $height: number }>`
   height: ${depth}px;
-  width: ${height}px;
+  width: ${({ $height }) => `${$height}px`};
 
-  top: ${(height - depth) / 2}px;
-  transform: rotateX(90deg) translateZ(${height / 2}px);
+  top: ${({ $height }) => `${($height - depth) / 2}px`};
+  transform: rotateX(90deg) ${({ $height }) => `translateZ(${$height / 2}px)`};
 `;
 
-const Bottom = styled(Face)`
+const Bottom = styled(Face)<{ $width: number; $height: number }>`
   height: ${depth}px;
-  width: ${height}px;
+  width: ${({ $height }) => `${$height}px`};
 
-  bottom: ${(height - depth) / 2}px;
-  transform: rotateX(-90deg) translateZ(${height / 2}px);
+  bottom: ${({ $height }) => `${($height - depth) / 2}px`};
+  transform: rotateX(-90deg) ${({ $height }) => `translateZ(${$height / 2}px)`};
 `;
