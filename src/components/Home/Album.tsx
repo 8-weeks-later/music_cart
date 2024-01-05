@@ -1,4 +1,4 @@
-import styled from "@emotion/styled";
+import styled, { StyledComponent } from "@emotion/styled";
 import { useEffect, useState } from "react";
 import { css } from "@emotion/react";
 
@@ -6,22 +6,20 @@ function AlbumItem({
   top,
   left,
   right,
-  bottom,
-  rotate,
   width,
   height,
+  Cube,
 }: {
   top?: string;
   left?: string;
   right?: string;
-  bottom?: string;
-  rotate?: boolean;
   width: number;
   height: number;
+  Cube: StyledComponent<any>;
 }) {
   return (
-    <Scene style={{ top, left, right, bottom }} $width={width} $height={height}>
-      <Cube $rotate={rotate}>
+    <Scene style={{ top, left, right }} $width={width} $height={height}>
+      <Cube>
         <Front $width={width} $height={height}>
           ?
         </Front>
@@ -42,8 +40,6 @@ export default function Album() {
     width: number;
     height: number;
   }>({ width: 135, height: 135 });
-
-  console.log(width, height);
 
   useEffect(() => {
     function getWindowDimensions() {
@@ -67,9 +63,27 @@ export default function Album() {
 
   return (
     <>
-      <AlbumItem top="7.2%" left="16.7%" width={width} height={height} />
-      <AlbumItem top="31%" right="9.2%" rotate width={width} height={height} />
-      <AlbumItem top="52.9%" left="16.7%" width={width} height={height} />
+      <AlbumItem
+        top="7.2%"
+        left="16.7%"
+        width={width}
+        height={height}
+        Cube={Cube1}
+      />
+      <AlbumItem
+        top="31%"
+        right="9.2%"
+        width={width}
+        height={height}
+        Cube={Cube2}
+      />
+      <AlbumItem
+        top="52.9%"
+        left="16.7%"
+        width={width}
+        height={height}
+        Cube={Cube3}
+      />
     </>
   );
 }
@@ -82,12 +96,19 @@ const Scene = styled.div<{ $width: number; $height: number }>`
   width: ${({ $width }) => `${$width}px`};
   height: ${({ $height }) => `${$height}px`};
   perspective: 600px;
-
-  //background: pink;
 `;
 
-const Cube = styled.div<{ $rotate?: boolean }>`
-  @keyframes regularRotation {
+const Cube = styled.div`
+  position: relative;
+
+  width: 100%;
+  height: 100%;
+
+  transform-style: preserve-3d;
+`;
+
+const Cube1 = styled(Cube)`
+  @keyframes rotation1 {
     0% {
       transform: translateZ(-100px) rotate3d(0, 1, 0, 0deg);
     }
@@ -96,7 +117,13 @@ const Cube = styled.div<{ $rotate?: boolean }>`
     }
   }
 
-  @keyframes mutatedRotation {
+  transform: translateZ(-100px) rotate3d(0, 1, 0, 0deg);
+
+  animation: rotation1 2s linear infinite;
+`;
+
+const Cube2 = styled(Cube)`
+  @keyframes rotation2 {
     0% {
       transform: translateZ(-100px) rotate3d(0, 1, 0, 20deg);
     }
@@ -105,17 +132,22 @@ const Cube = styled.div<{ $rotate?: boolean }>`
     }
   }
 
-  position: relative;
+  transform: translateZ(-100px) rotate3d(0, 1, 0, 20deg);
+  animation: rotation2 2s linear infinite;
+`;
 
-  width: 100%;
-  height: 100%;
+const Cube3 = styled.div`
+  @keyframes rotation3 {
+    0% {
+      transform: translateZ(-100px) rotate3d(0, 1, 0, 40deg);
+    }
+    100% {
+      transform: translateZ(-100px) rotate3d(0, 1, 0, 220deg);
+    }
+  }
 
-  transform: translateZ(-100px)
-    ${({ $rotate }) => $rotate && `rotate3d(0, 1, 0, 40deg)`};
-  transform-style: preserve-3d;
-  animation: ${({ $rotate }) =>
-      $rotate ? `mutatedRotation` : `regularRotation`}
-    2s linear infinite;
+  transform: translateZ(-100px) rotate3d(0, 1, 0, 40deg);
+  animation: rotation3 2s linear infinite;
 `;
 
 const Face = styled.div`
