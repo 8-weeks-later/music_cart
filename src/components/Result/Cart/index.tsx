@@ -8,19 +8,22 @@ import Plane from "@/components/Result/Cart/Plane";
 import ThreeCanvas from "@/components/Result/Cart/ThreeCanvas";
 import { TopAlbum } from "@/components/Result/type";
 import styled from "@emotion/styled";
+import { Container as _Container } from "@/components/Common/Container.styled";
 
-export default function Cart({ albums }: { albums: TopAlbum[] }) {
+export default function Cart({ albums: _albums }: { albums: TopAlbum[] }) {
+  const albums = _albums.slice(0, 5);
+
   return (
     <Container>
       <ThreeCanvas>
-        <Physics gravity={[0, -80, 0]}>
+        <Physics gravity={[0, -60, 0]}>
           {/* TODO 주석 제거 <Debug color="green" scale={1.1}>*/}
           <Plane position={[0, -2.5, 0]} />
           {/*@ts-ignore*/}
           {albums.map(({ cover }, idx) => {
-            const x = -3.1 + Math.floor(Math.random() * 5) + 1;
+            const x = Math.floor(Math.random() * 3) + 0.2;
             return (
-              <Album position={[x, 30, 0]} cover={cover.url} key={cover} />
+              <Album position={[x, 20, 0]} cover={cover.url} key={cover} />
             );
           })}
           <Basket />
@@ -39,9 +42,8 @@ export default function Cart({ albums }: { albums: TopAlbum[] }) {
   );
 }
 
-const Container = styled.div`
+const Container = styled(_Container)`
   margin: 0 auto;
 
-  width: 100%;
-  height: 720px;
+  height: 80svh;
 `;
