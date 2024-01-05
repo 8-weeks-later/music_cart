@@ -2,6 +2,17 @@ import Image from "next/image";
 import styled from "@emotion/styled";
 
 export default function Footer() {
+  const date = new Date();
+  let [year, month, day] = [
+    date.getFullYear().toString(),
+    (date.getMonth() + 1).toString(),
+    date.getDay().toString(),
+  ];
+
+  if (month.length === 1) month = `0${month}`;
+  if (day.length === 1) day = `0${day}`;
+  const dateText = `${year}${month}${day}`;
+
   return (
     <Container>
       <div className="share">
@@ -18,7 +29,7 @@ export default function Footer() {
           width={182}
           height={52}
         />
-        <p className="date">20231207</p>
+        <p className="date">{dateText}</p>
       </div>
     </Container>
   );
