@@ -25,7 +25,12 @@ export default function FavTracks({ topTrack }: { topTrack: TopTrack[] }) {
                 </div>
               </div>
             </div>
-            <span className="count">{track.count}회</span>
+            <span className="count">
+              {new Intl.NumberFormat("en-IN", {
+                maximumSignificantDigits: 3,
+              }).format(track.count)}
+              회
+            </span>
           </TrackItem>
         ))}
       </TrackList>

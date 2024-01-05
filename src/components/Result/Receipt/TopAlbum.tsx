@@ -28,7 +28,11 @@ export default function TopAlbum({
         {topAlbum.map((album, idx) => (
           <Item>
             <span className="name">{album.name}</span>
-            <span className="count">{album.count}</span>
+            <span className="count">
+              {new Intl.NumberFormat("en-IN", {
+                maximumSignificantDigits: 3,
+              }).format(album.count)}
+            </span>
           </Item>
         ))}
       </List>
