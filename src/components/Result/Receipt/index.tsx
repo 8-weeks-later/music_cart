@@ -33,5 +33,5 @@ export default function Receipt({
 }
 
 export const ReceiptContainer = styled(Container)`
-  padding: 38px 0 24px;
+  padding: 20px 0 24px;
 `;

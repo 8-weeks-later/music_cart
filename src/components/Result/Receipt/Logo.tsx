@@ -18,7 +18,7 @@ export default function Logo() {
 }
 
 const Container = styled.div`
-  margin: 70px 0 32px;
+  margin: 0 0 32px;
 `;
 
 const LogoText = styled.div`
