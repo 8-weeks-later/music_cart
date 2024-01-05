@@ -2,9 +2,9 @@ import { useBox } from "@react-three/cannon";
 import { TextureLoader } from "three";
 
 export default function Album({ position, cover, props }: any) {
-  const width = 3;
-  const height = 3;
-  const depth = 0.25;
+  const width = 3.5;
+  const height = 3.5;
+  const depth = 0.3;
   const [ref] = useBox(() => ({
     args: [width - 0.2, height - 0.2, 0.25],
     mass: 1,
